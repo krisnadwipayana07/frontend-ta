@@ -31,19 +31,10 @@ const LineChart = ({
   return (
     <Box borderRadius="10px" boxShadow={2} p="1em">
       <Grid container py="1rem">
-        <Grid item xs={6}>
+        <Grid item>
           <Typography fontSize="20px" fontWeight={700}>
             {title}
           </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          display="flex"
-          alignItems="right"
-          justifyContent="right"
-        >
-          <ModalDatePicker />
         </Grid>
       </Grid>
       {isSuperAdmin && (

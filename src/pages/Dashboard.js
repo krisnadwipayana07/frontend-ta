@@ -7,7 +7,9 @@ import ResponsiveAppBar from "../components/appbar/ResponsiveAppBar";
 import TotalCard from "../components/card/card-total/TotalCard";
 import BarChartPlain from "../components/chart/barchart/BarChartPlain";
 import LineChart from "../components/chart/linechart/LineChart";
+import ModalDatePicker from "../components/modal/datepicker/ModalDatePicker";
 import { GeneralContext } from "../context/GeneralContext";
+import { GetProductVisitGraph } from "../utils/api/ProductApi";
 import {
   GetProductSales,
   GetSalesByDay,
@@ -43,6 +45,7 @@ export default function Dashboard(props) {
   const [productSales, setProductSales] = useState([]);
   const [totalProductSales, setTotalProductSales] = useState(0);
   const [salesByDay, setSalesByDay] = useState([]);
+  const [productVisit, setProductVisit] = useState([]);
 
   const [labelID, setLabelID] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
@@ -55,7 +58,6 @@ export default function Dashboard(props) {
   const paramsData = {
     dateStart: filterDashboard.dateStart,
     dateEnd: filterDashboard.dateEnd,
-    districtID: filterDistrict,
   };
 
   const dataSalesByCashier = {
@@ -90,9 +92,20 @@ export default function Dashboard(props) {
       },
     ],
   };
+  const dataProductVisit = {
+    labels: productVisit?.label,
+    datasets: [
+      {
+        data: productVisit?.data,
+        backgroundColor: "#1976d2",
+        barPercentage: 0.5,
+        label: "Jumlah",
+      },
+    ],
+  };
 
   React.useEffect(() => {
-    GetTotalBySales()
+    GetTotalBySales(paramsData)
       .then((res) => {
         setTotalSalesByCashier(res.data.data);
         const total = res.data.data?.data.reduce(
@@ -102,7 +115,7 @@ export default function Dashboard(props) {
         setSalesTotal(total);
       })
       .catch((err) => console.log(err));
-    GetProductSales()
+    GetProductSales(paramsData)
       .then((res) => {
         setProductSales(res.data.data);
         const total = res.data.data?.data.reduce(
@@ -112,11 +125,12 @@ export default function Dashboard(props) {
         setTotalProductSales(total);
       })
       .catch((err) => console.log(err));
-    GetSalesByDay().then((res) => {
+    GetSalesByDay(paramsData).then((res) => {
       const data = res.data.data;
       setSalesByDay(data);
     });
-  }, []);
+    GetProductVisitGraph().then((res) => setProductVisit(res.data.data));
+  }, [filterDashboard]);
 
   const handleFilterDistrict = (value) => {
     // console.log(labelID[value]);
@@ -129,6 +143,9 @@ export default function Dashboard(props) {
   return (
     <Box>
       <ResponsiveAppBar>
+        <Box display="flex" justifyContent="end" mb="1em">
+          <ModalDatePicker />
+        </Box>
         <SimpleGrid columns={[1, 4]} spacing={10} pb="16">
           <Box>
             <TotalCard
@@ -179,6 +196,15 @@ export default function Dashboard(props) {
               displaylegend={false}
               yAxisMax={10}
               beginAtZero={true}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <BarChartPlain
+              displaylegend={false}
+              data={dataProductVisit}
+              title="Product Visit"
+              IDConvert={false}
+              yAxisMax={10}
             />
           </Grid>
         </Grid>

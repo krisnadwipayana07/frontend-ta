@@ -5,16 +5,16 @@ const TotalBySalesAPI = "/admin/graph/sales",
   SalesByDayAPI = "/admin/graph/sales/by-day",
   AllTransactionAPI = "/admin/transaction";
 
-export async function GetTotalBySales() {
-  return await client.get(TotalBySalesAPI);
+export async function GetTotalBySales(data) {
+  return await client.get(TotalBySalesAPI, { params: data });
 }
 
-export async function GetProductSales() {
-  return await client.get(ProductSalesAPI);
+export async function GetProductSales(data) {
+  return await client.get(ProductSalesAPI, { params: data });
 }
 
-export async function GetSalesByDay() {
-  return await client.get(SalesByDayAPI);
+export async function GetSalesByDay(data) {
+  return await client.get(SalesByDayAPI, { params: data });
 }
 
 export async function GetAllTransaction() {

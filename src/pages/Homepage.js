@@ -219,6 +219,24 @@ export default function Homepage() {
           >
             Dashboard - Restaurant
           </Typography>
+          <Typography
+            variant="h5"
+            component="h1"
+            color="grey.500"
+            fontWeight="bold"
+            pt="1em"
+          >
+            Implementasi Business Intelligence Pada Restoran dengan menggunakan
+            Metode Online Analytical Processing
+          </Typography>
+          <Typography
+            variant="h5"
+            component="h1"
+            color="grey.500"
+            fontWeight="bold"
+          >
+            I Kadek Krisna Dwi Payana (1908561100)
+          </Typography>
         </Box>
       </ResponsiveAppBar>
       <Loading loading={isLoading} />
