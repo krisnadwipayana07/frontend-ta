@@ -27,7 +27,7 @@ const LineChart = ({
   };
 
   //console.log here
-  console.log(districtID);
+  // console.log(districtID);
   return (
     <Box borderRadius="10px" boxShadow={2} p="1em">
       <Grid container py="1rem">

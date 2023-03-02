@@ -46,6 +46,8 @@ export default function Dashboard(props) {
   const [totalProductSales, setTotalProductSales] = useState(0);
   const [salesByDay, setSalesByDay] = useState([]);
   const [productVisit, setProductVisit] = useState([]);
+  const [averageSales, setAverageSales] = useState(0);
+  const [biggestVisit, setBiggestVisit] = useState(0);
 
   const [labelID, setLabelID] = useState([]);
   const [totalPayment, setTotalPayment] = useState(0);
@@ -128,8 +130,15 @@ export default function Dashboard(props) {
     GetSalesByDay(paramsData).then((res) => {
       const data = res.data.data;
       setSalesByDay(data);
+      let temp = 0;
+      data.data.map((item) => (temp = temp + item));
+      setAverageSales(Math.round(temp / data.data.length));
     });
-    GetProductVisitGraph().then((res) => setProductVisit(res.data.data));
+    GetProductVisitGraph(paramsData).then((res) => {
+      const data = res.data.data;
+      setProductVisit(data);
+      setBiggestVisit(Math.max(...data.data));
+    });
   }, [filterDashboard]);
 
   const handleFilterDistrict = (value) => {
@@ -159,13 +168,10 @@ export default function Dashboard(props) {
               total={totalProductSales + " pcs"}
             />
           </Box>
+          <TotalCard judul="Rata - Rata Transaksi" total={averageSales} />
           <TotalCard
-            judul="Total Product Terjual"
-            total={totalProductSales + " pcs"}
-          />
-          <TotalCard
-            judul="Total Product Terjual"
-            total={totalProductSales + " pcs"}
+            judul="Pengunjungan produk tertinggi"
+            total={biggestVisit + " kali"}
           />
         </SimpleGrid>
         <Grid container spacing={2}>

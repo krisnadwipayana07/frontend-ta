@@ -7,6 +7,6 @@ export async function GetProductDetail(id) {
   return await client.get("/getData/" + id);
 }
 
-export async function GetProductVisitGraph() {
-  return await client.get("/admin/graph/product-visit");
+export async function GetProductVisitGraph(data) {
+  return await client.get("/admin/graph/product-visit", { params: data });
 }
